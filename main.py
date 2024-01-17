@@ -92,7 +92,7 @@ def save_data_to_json(data):
         storage = {}
     storage.update({str(datetime.now()): data_dict})
     with open('storage/data.json', 'w') as f:
-        json.dump(storage, f)
+        json.dump(storage, f, indent=2)
 
 
 if __name__ == '__main__':
