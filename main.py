@@ -76,36 +76,23 @@ def run_udp_server():
                 data, addr = udp_socket.recvfrom(1024)
                 print(f'Received data: {data.decode()} from: {addr}')
                 try:
-                    data_dict = json.loads(data.decode())
-                    process_and_save_data(data_dict)
+                    save_data_to_json(data)
                 except Exception as e:
                     print(f"Error while processing data: {e}")
         except KeyboardInterrupt:
             print("Stopping UDP server")
 
-def process_and_save_data(data_dict):
-    timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S.%f")[:-3]
-    print(f"Received data at {timestamp}: {data_dict}")
-
-    new_entry = {timestamp: {"username": data_dict.get("username", ""),
-                             "message": data_dict.get("message", "")}}
-
+def save_data_to_json(data):
+    data_parse = urllib.parse.unquote_plus(data.decode())
+    data_dict = {key: value for key, value in [el.split('=') for el in data_parse.split('&')]}
     try:
-        # Ініціалізуємо змінну data, якщо вона не ініціалізована
-        if not data:
-            data = {}
-
-        # Розкодуємо дані з форми в словник
-        data_dict = json.loads(data.decode())
-
-        # Додаємо нове повідомлення в словник
-        data.update(new_entry)
-
-        # Збережемо дані в файл
-        with open('storage/data.json', 'w') as json_file:
-            json.dump(data, json_file)
-    except Exception as e:
-        print(f"Error while saving data: {e}")
+        with open('storage/data.json', 'r') as f:
+            storage = json.load(f)
+    except ValueError:
+        storage = {}
+    storage.update({str(datetime.now()): data_dict})
+    with open('storage/data.json', 'w') as f:
+        json.dump(storage, f)
 
 
 if __name__ == '__main__':
