@@ -4,10 +4,10 @@ ENV APP_HOME /app
 
 WORKDIR $APP_HOME
 
-COPY . /app
+COPY . $APP_HOME
 
 VOLUME /storage/data.json
 
-EXPOSE 80
+EXPOSE 3000
 
-CMD python3 main.py
+ENTRYPOINT ["python", "main.py"]
