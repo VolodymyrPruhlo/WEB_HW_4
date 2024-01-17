@@ -95,13 +95,10 @@ def process_and_save_data(data_dict):
         if not data:
             data = {}
 
-        # Розкодуємо дані з форми в словник
         data_dict = json.loads(data.decode())
 
-        # Додаємо нове повідомлення в словник
         data.update(new_entry)
 
-        # Збережемо дані в файл
         with open('storage/data.json', 'w') as json_file:
             json.dump(data, json_file)
     except Exception as e:
