@@ -91,7 +91,6 @@ def process_and_save_data(data_dict):
                              "message": data_dict.get("message", "")}}
 
     try:
-        # Ініціалізуємо змінну data, якщо вона не ініціалізована
         if not data:
             data = {}
 
